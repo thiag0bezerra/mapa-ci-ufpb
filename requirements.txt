@@ -1,0 +1,6 @@
+streamlit
+pydantic
+httpx
+rich
+ruff
+pandas
