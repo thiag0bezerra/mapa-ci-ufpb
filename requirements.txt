@@ -4,3 +4,4 @@ httpx
 rich
 ruff
 pandas
+streamlit_calendar
