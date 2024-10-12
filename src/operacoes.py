@@ -1,21 +1,21 @@
-from typing import List, Optional
+from typing import Optional
 from .saci import Alocacao
 
 
 def filtrar(
-    alocacoes: List[Alocacao],
+    alocacoes: list[Alocacao],
     docente: Optional[str] = None,
     departamento: Optional[str] = None,
     horario: Optional[str] = None,
     min_alunos: Optional[int] = None,
     max_alunos: Optional[int] = None,
     ordenar_por: Optional[str] = None,
-) -> List[Alocacao]:
+) -> list[Alocacao]:
     """
     Filtra e ordena uma lista de alocações com base nsos critérios fornecidos.
 
     Args:
-        alocações (List[Alocacao]): Lista de disciplinas a serem filtradas.
+        alocações (list[Alocacao]): Lista de disciplinas a serem filtradas.
         docente (Optional[str]): Nome do docente a filtrar.
         departamento (Optional[str]): Departamento a filtrar.
         horario (Optional[str]): Horário a filtrar.
@@ -24,7 +24,7 @@ def filtrar(
         ordenar_por (Optional[str]): Campo pelo qual as disciplinas devem ser ordenadas. Ex.: 'alunos'.
 
     Returns:
-        List[Alocacao]: Lista de alocações filtradas e ordenadas.
+        list[Alocacao]: Lista de alocações filtradas e ordenadas.
     """
 
     # Filtrando as disciplinas de acordo com os parâmetros fornecidos
@@ -63,8 +63,8 @@ def filtrar(
 
 
 def ordenar(
-    alocacoes: List[Alocacao], ordenar_por: str, crescente: bool
-) -> List[Alocacao]:
+    alocacoes: list[Alocacao], ordenar_por: str, crescente: bool
+) -> list[Alocacao]:
     # Dividimos a string ordenar_por caso precise acessar atributos internos (ex: "sala.capacidade")
     def chave(alocacao: Alocacao):
         atributos = ordenar_por.split(".")
