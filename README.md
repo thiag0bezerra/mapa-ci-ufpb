@@ -2,6 +2,10 @@
 
 Este projeto gera mapas SVG e permite a visualização interativa de mapas, suas salas e horários, além de possibilitar a análise de dados.
 
+## Requisitos
+
+- Python 3.11 ou superior
+
 ## Configuração do Ambiente Virtual
 
 ### Linux
@@ -58,6 +62,3 @@ Para executar a aplicação de visualização de dados no console, use:
 python3 terminal.py
 ```
 
----
-
-Mantenha seu ambiente virtual ativo para garantir que todas as dependências estejam disponíveis ao rodar os comandos.

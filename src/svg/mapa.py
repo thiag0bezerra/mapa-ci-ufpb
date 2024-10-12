@@ -148,7 +148,9 @@ def create_path_element(props: PathSchema) -> str:
             ("stroke-linecap", props.strokeLinecap),
             ("stroke-linejoin", props.strokeLinejoin),
         ]
-        return f'<path {' '.join([f'{param[0]}="{param[1]}"' for param in params if param[1] != ""])} />'
+        attributes = [f'{key}="{value}"' for key, value in params if value != '']
+        path_element = f'<path {" ".join(attributes)} />'        
+        return path_element
 
     d = props.d
     dim = 200
@@ -235,7 +237,8 @@ def create_path_element(props: PathSchema) -> str:
         ("class", props.type)
     ]
 
-    path_element = f'<path {' '.join([f'{param[0]}="{param[1]}"' for param in params if param[1] != ""])} />'
+    attributes = [f'{key}="{value}"' for key, value in params if value and value != '']
+    path_element = f'<path {" ".join(attributes)} />'
     path_element += f'<g transform="{calculate_transform(centerX,centerY,dim,dim,0.25)}"> {icone} </g>'
     path_element += render_upper_text(props.title, centerX, centerY, text_distance, width, props.type)
     path_element += render_bottom_text(props.description, centerX, centerY, text_distance, width, props.type)
@@ -309,6 +312,7 @@ stroke-width: 3px;
 transition: fill 0.4s;
 }}""")
 
+    elements_str = '\n'.join(elements)
     svg_content = f"""
 <svg version="1.1" viewBox="0.0 0.0 960.0 540.0" fill="none" stroke="none" stroke-linecap="square"
     stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -318,7 +322,7 @@ transition: fill 0.4s;
         <path d="m0 0l960.0 0l0 540.0l-960.0 0l0 -540.0z" clip-rule="nonzero" />
     </clipPath>
     <g clip-path="url(#g11a8898941b_2_160.0)">
-        {'\n'.join(elements)}
+        {elements_str}
     </g>
 </svg>"""
 
