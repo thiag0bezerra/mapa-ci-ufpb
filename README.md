@@ -51,7 +51,7 @@ python3 -m src.svg.mapa
 Para visualizar o mapa da sala e horários de maneira interativa via Streamlit, execute:
 
 ```bash
-streamlit run webapp.py
+python3 -m streamlit run src/app/web.py
 ```
 
 ## Visualização de Dados no Terminal
@@ -59,6 +59,6 @@ streamlit run webapp.py
 Para executar a aplicação de visualização de dados no console, use:
 
 ```bash
-python3 terminal.py
+python3 -m src.app.terminal
 ```
 
