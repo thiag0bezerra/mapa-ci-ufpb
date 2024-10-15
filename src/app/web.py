@@ -178,11 +178,12 @@ opcoes = sorted(
 
 if len(opcoes) > 0:
     mode = st.selectbox(
-        "Calendar Mode:",
+        "Salas:",
         ()  # TODO: outros componentes
         + tuple(opcoes),
     )
 
+    # filtrar apenas a sala selecionada
     alocacoes = [
         alocacao
         for alocacao in alocacoes
@@ -194,6 +195,7 @@ if len(opcoes) > 0:
     events = []
 
     for alocacao in alocacoes:
+        # [3,5] 'M' [2,3]
         horarios_desestruturados = desestruturar_horario(alocacao.disciplina.horario)
         horarios = gerar_horarios(horarios_desestruturados)
         for dia, formatted_date_time in horarios.items():
@@ -220,7 +222,7 @@ if len(opcoes) > 0:
         "selectable": "false",
     }
 
-    if "resource" in mode: # TODO: implementar outras visualizações
+    if "resource" in mode:  # TODO: implementar outras visualizações
         pass
     else:
         # sala individual
