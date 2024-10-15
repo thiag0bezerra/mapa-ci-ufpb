@@ -54,11 +54,4 @@ Para visualizar o mapa da sala e horários de maneira interativa via Streamlit, 
 python3 -m streamlit run src/app/web.py
 ```
 
-## Visualização de Dados no Terminal
-
-Para executar a aplicação de visualização de dados no console, use:
-
-```bash
-python3 -m src.app.terminal
-```
 
