@@ -102,203 +102,238 @@
     {
         "fill": "#cdc9c4",
         "type": "banheiro-masculino",
-        "d": "m719.30444 305.64282l-44.556458 0l0 -106.94466l89.112915 0l0 106.94466l-44.556458 0",
-        "fillRule": "evenodd"
+        "d": "m674.7018 253.47014l87.362854 0l0 51.26503l-87.362854 0l0 -51.26503",
+        "fillRule": "evenodd",
+        "transform": "matrix(1, 0, 0, 1, -4.969641208648682, -1.6565470695495605)"
+    },
+    {
+        "fill": "#cdc9c4",
+        "type": "banheiro-feminino",
+        "d": "m674.7018 200.15096l87.362854 0l0 50.69783l-87.362854 0l0 -50.69783",
+        "fillRule": "evenodd",
+        "transform": "matrix(1, 0, 0, 1, -4.969641208648682, -1.6565470695495605)"
     },
     {
         "fill": "#cdc9c4",
         "type": "none",
-        "title": "Copa",
+        "title": "", 
         "d": "m620.547 305.4008l-20.96399 0l0 -107.36095l41.89331 0l0 107.36095l-20.929321 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
-        "id": "bug",
         "type": "sala-de-professor",
-        "title": "Professor",
-        "d": "M 167.877 200.596 L 129.003 200.596 L 129.003 1.806 L 206.751 1.806 L 206.751 200.596 L 167.877 200.596",
+        "title": "CI-219",
+        "description": "Professor",
+        "d": "m167.8766 198.59581l-38.873978 0l0 -198.79004l77.747955 0l0 198.79004l-38.873978 0",
         "fillRule": "evenodd"
-    },
+    },    
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-220",
+        "description": "Professor",
         "d": "m247.01283 165.9752l-39.012833 0l0 -164.64186l78.025665 0l0 164.64186l-39.012833 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-221",
+        "description": "Professor",
         "d": "m324.51675 165.9752l-39.012817 0l0 -164.64186l78.025665 0l0 164.64186l-39.012848 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-222",
+        "description": "Professor",
         "d": "m402.02042 165.79477l-38.978424 0l0 -163.1071l77.99155 0l0 163.1071l-39.013123 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-223",
+        "description": "Professor",
         "d": "m478.86606 165.79352l-39.012543 0l0 -163.10674l78.025085 0l0 163.10674l-39.012543 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-224",
+        "description": "Professor",
         "d": "m557.0301 165.79352l-39.012573 0l0 -163.10674l77.99036 0l0 163.10674l-38.977783 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-225",
+        "description": "Professor",
+        "d": "m634.5346 165.79352l-39.012512 0l0 -163.10674l78.025024 0l0 163.10674l-39.012512 0",
+        "fillRule": "evenodd"
+    },        
+    {
+        "fill": "#e0d2c6",
+        "type": "sala-de-professor",
+        "title": "CI-226",
+        "description": "Professor",
         "d": "m712.0391 165.79388l-39.012512 0l0 -163.1071l78.025085 0l0 163.1071l-39.012573 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-227",
+        "description": "Professor",
         "d": "m791.55676 165.79352l-39.012512 0l0 -163.10674l78.025085 0l0 163.10674l-39.012573 0",
         "fillRule": "evenodd"
     },
+
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
-        "d": "m634.5346 165.79352l-39.012512 0l0 -163.10674l78.025024 0l0 163.10674l-39.012512 0",
-        "fillRule": "evenodd"
-    },
-    {
-        "fill": "#e0d2c6",
-        "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-209",
+        "description": "Professor",
         "d": "m168.49945 421.2301l-38.66481 0l0 -115.2406l77.32962 0l0 115.2406l-38.66481 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#ddc6d8",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-210",
+        "description": "Professor",
         "d": "m168.29268 503.28793l-37.83336 0l0 -82.335175l75.66673 0l0 82.335175l-37.833374 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-211",
+        "description": "Professor",
         "d": "m245.93628 503.28793l-39.77617 0l0 -82.335175l79.55232 0l0 82.335175l-39.776154 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-212",
+        "description": "Professor",
         "d": "m324.3435 503.28793l-38.873688 0l0 -82.335175l77.747406 0l0 82.335175l-38.87372 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-213",
+        "description": "Professor",
         "d": "m401.84744 503.28793l-38.873688 0l0 -82.335175l77.747406 0l0 82.335175l-38.87372 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-206",
+        "description": "Professor",
         "d": "m401.84744 421.05774l-38.873688 0l0 -82.33453l77.747406 0l0 82.33453l-38.87372 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-207",
+        "description": "Professor",
         "d": "m325.00238 421.05774l-38.87372 0l0 -82.33453l77.747406 0l0 82.33453l-38.873688 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-208",
+        "description": "Professor",
         "d": "m246.31848 421.05695l-39.394592 0l0 -82.335175l78.789215 0l0 82.335175l-39.394623 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-205",
+        "description": "Professor",
         "d": "m467.93283 419.87756l-27.385132 0l0 -81.258514l54.770264 0l0 81.258514l-27.385132 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-214",
+        "description": "Professor",
         "d": "m467.93283 503.46127l-27.385132 0l0 -81.25833l54.770264 0l0 81.25833l-27.385132 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-204",
+        "description": "Professor",
         "d": "m556.8565 421.92532l-38.665405 0l0 -83.306274l77.33087 0l0 83.306274l-38.665466 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-203",
+        "description": "Professor",
         "d": "m634.3611 421.92532l-38.665466 0l0 -83.306274l77.33087 0l0 83.306274l-38.665405 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-202",
+        "description": "Professor",
         "d": "m713.21924 421.9255l-38.665466 0l0 -83.30646l77.33093 0l0 83.30646l-38.665466 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-215",
+        "description": "Professor",
         "d": "m556.92596 503.28772l-39.39435 0l0 -82.33435l78.788635 0l0 82.33435l-39.394287 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-216",
+        "description": "Professor",
         "d": "m635.08997 503.28772l-39.39435 0l0 -82.33435l78.788635 0l0 82.33435l-39.394287 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-217",
+        "description": "Professor",
         "d": "m713.28864 503.28772l-39.394287 0l0 -82.33435l78.788635 0l0 82.33435l-39.39435 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-218",
+        "description": "Professor",
         "d": "m790.7932 503.2879l-39.39435 0l0 -82.33453l78.788635 0l0 82.33453l-39.394287 0",
         "fillRule": "evenodd"
     },
     {
         "fill": "#e0d2c6",
         "type": "sala-de-professor",
-        "title": "Professor",
+        "title": "CI-201",
+        "description": "Professor",
         "d": "m790.72375 421.92532l-38.665405 0l0 -83.306274l77.33087 0l0 83.306274l-38.665466 0",
         "fillRule": "evenodd"
     },

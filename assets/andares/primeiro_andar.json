@@ -30,7 +30,7 @@
         "fill": "#e2ded7",
         "type": "generico",
         "title": "CI-111",
-        "description": "Coordenação Pós-graduação",
+        "description": "Pós-graduação",
         "d": "m634.6359 166.18272l-39.12152 0l0 -164.42157l78.24304 0l0 164.42157l-39.12152 0",
         "fillRule": "evenodd",
         "transform": "matrix(1, 0, 0, 1, -4.969641208648682, -1.6565470695495605)"
@@ -39,7 +39,7 @@
         "fill": "#e2ded7",
         "type": "generico",
         "title": "CI-110",
-        "description": "ASSESSORIA TECNOLOGIA CI",
+        "description": "ASSESSORIA TI",
         "d": "m556.6898 165.9863l-38.68457 0l0 -164.88657l77.3692 0l0 164.88657l-38.68463 0",
         "fillRule": "evenodd",
         "transform": "matrix(1, 0, 0, 1, -4.969641208648682, -1.6565470695495605)"
@@ -170,7 +170,7 @@
     {
         "fill": "#cdc9c4",
         "type": "none",
-        "title": "sala de redes",
+        "title": "",
         "d": "m620.0721 268.6595l-21.000366 0l0 -68.99933l42.00067 0l0 68.99933l-21.000305 0",
         "fillRule": "evenodd",
         "transform": "matrix(1, 0, 0, 1, -4.969641208648682, -1.6565470695495605)"

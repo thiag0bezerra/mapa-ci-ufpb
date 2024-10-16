@@ -15,7 +15,7 @@
     {
         "fill": "#f4efe7",
         "type": "none",
-        "title": "recepção",
+        "title": "",
         "d": "m606.2004 347.05624l67.22937 0l0 30.924896l-67.22937 0l0 -30.924896",
         "fillRule": "evenodd"
     },
@@ -105,7 +105,7 @@
         "fill": "#cdc9c4",
         "type": "none",
         "title": "T04",
-        "description": "Copa",
+        "description": "",
         "d": "m601.0245 200.56303l39.609253 0l0 68.10863l-39.609253 0l0 -68.10863",
         "fillRule": "evenodd"
     },
