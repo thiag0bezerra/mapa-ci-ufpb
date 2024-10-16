@@ -265,10 +265,14 @@ def create_path_element(props: PathSchema) -> str:
     if props.type == "sala-de-aula":
         icon_svg = load_icon("sala-de-aula", dim, dim)
     elif props.type == "sala-de-professor":
+        if int(props.title.lower().replace("ci-",'')) < 219:
+            dim = 150
         icon_svg = load_icon("sala-de-professor", dim, dim)
     elif props.type == "banheiro-masculino":
-        icon_svg = load_icon("banheiro-masculino", dim, dim)
+        dim = 170
+        icon_svg = load_icon("banheiro-masculino", dim, dim)        
     elif props.type == "banheiro-feminino":
+        dim = 170
         icon_svg = load_icon("banheiro-feminino", dim, dim)
     elif props.type == "biblioteca":
         icon_svg = load_icon("biblioteca", dim, dim)
@@ -279,6 +283,8 @@ def create_path_element(props: PathSchema) -> str:
     elif props.type == "laboratorio-de-pesquisa":
         icon_svg = load_icon("laboratorio-de-pesquisa", dim, dim)
     elif props.type == "generico":
+        if props.description.lower() in ['comunicação', 'planejamento', 'departamentos']:
+            dim = 150
         icon_svg = load_icon("generico", dim, dim)
     else:
         # Se o tipo não corresponder a nenhum conhecido, ajusta o text_distance
