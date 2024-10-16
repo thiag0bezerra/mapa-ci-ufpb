@@ -65,9 +65,7 @@ packaging==24.1
     #   altair
     #   streamlit
 pandas==2.2.3
-    # via
-    #   mapa-ci-ufpb (pyproject.toml)
-    #   streamlit
+    # via streamlit
 pillow==10.4.0
     # via streamlit
 protobuf==5.28.2
@@ -110,12 +108,12 @@ sniffio==1.3.1
     # via
     #   anyio
     #   httpx
+st-click-detector==0.1.3
+    # via mapa-ci-ufpb (pyproject.toml)
 streamlit==1.39.0
     # via
     #   mapa-ci-ufpb (pyproject.toml)
-    #   streamlit-calendar
-streamlit-calendar==1.2.0
-    # via mapa-ci-ufpb (pyproject.toml)
+    #   st-click-detector
 tenacity==9.0.0
     # via streamlit
 toml==0.10.2

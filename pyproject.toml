@@ -10,6 +10,5 @@ dependencies = [
     "httpx>=0.27.2",
     "rich>=13.9.2",
     "ruff>=0.6.9",
-    "pandas>=2.2.3",
-    "streamlit-calendar>=1.2.0",
+    "st-click-detector>=0.1.3",
 ]
