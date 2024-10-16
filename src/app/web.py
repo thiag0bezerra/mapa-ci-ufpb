@@ -145,6 +145,7 @@ def visualizar_disciplina(alocacoes: list[Alocacao]) -> None:
     if mode == "Por dia":
         # Exibe as disciplinas separadas por dia da semana
         for dia_numero, dia_nome in semana.items():
+            linhas = []
             for alocacao in alocacoes:
                 # Desestrutura o horário para obter os dias em que a disciplina ocorre
                 horarios_desestruturados = desestruturar_horario(
@@ -259,7 +260,6 @@ def visualizar_disciplina(alocacoes: list[Alocacao]) -> None:
 
 # Verifica se o usuário clicou em algum elemento do mapa
 if clicked and clicked != "":
-    print(f"{datetime.now()} clicou em {clicked}")
     alocacoes_da_sala: list[Alocacao] = []
     # Procura por alocações cuja sala corresponda ao elemento clicado
     for alocacao in alocacoes:
