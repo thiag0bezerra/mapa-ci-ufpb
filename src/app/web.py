@@ -1,113 +1,31 @@
-"""Aplicação para exibição de mapas SVG de um prédio usando Streamlit."""
+"""
+Aplicação para exibição de mapas SVG de um prédio usando Streamlit.
+
+Este aplicativo permite que os usuários visualizem mapas interativos de diferentes andares de um prédio.
+Os usuários podem selecionar um andar, visualizar o mapa correspondente e clicar em salas para obter
+informações detalhadas sobre as disciplinas alocadas nessas salas.
+
+Os dados são obtidos da API da UFPB e processados para exibição no aplicativo.
+"""
 
 import streamlit as st
-from streamlit_calendar import calendar
-from src.utils import descarregar_conteudo
-from datetime import datetime, timezone, timedelta
-from src.saci import desestruturar_horario
+from st_click_detector import click_detector
+from src.utils import (
+    descarregar_conteudo,
+    desestruturar_horario,
+    criar_tabela_markdown,
+)
+from datetime import datetime
+from src.saci import Alocacao
+from src.svg.mapa import load_map
 
+# URL da API para obter as alocações de disciplinas
 url = "https://sa.ci.ufpb.br/api/db/public/paas?centro=ci"
 
-alocacoes = descarregar_conteudo(url)
+# Baixa e processa os dados das alocações a partir da URL fornecida
+alocacoes: list[Alocacao] = descarregar_conteudo(url)
 
-
-def gerar_horarios(dados: dict) -> dict[int, list[str]]:
-    """
-    Gera um dicionário com datas e horários formatados com base nos dias, turnos e horários informados.
-
-    Args:
-        dados (dict): Dicionário contendo as chaves 'dias', 'turno' e 'horarios'.
-
-    Returns:
-        dict[int, list[str]]: Dicionário onde a chave é o número do dia e o valor é uma lista de strings com datas e horários formatados.
-    """
-    # Mapeamento dos turnos para suas letras e horários de início
-    turnos_horarios = {
-        "E": [0, 1, 2, 3, 4, 5],  # Madrugada
-        "M": [6, 7, 8, 9, 10, 11],  # Manhã
-        "T": [12, 13, 14, 15, 16, 17],  # Tarde
-        "N": [18, 19, 20, 21, 22, 23],  # Noite
-    }
-
-    dias_semana = obter_datas_desta_semana()  # Obtém as datas desta semana
-    resultado = {}
-
-    for dia in dados["dias"]:
-        # Verifica se o dia está nas datas da semana (entre 1 e 7)
-        if str(dia) in dias_semana:
-            data = dias_semana[str(dia)]
-            horarios = []
-            # Pega os horários baseados no turno e nos horários fornecidos
-            for h in dados["horarios"]:
-                hora_inicio = turnos_horarios[dados["turno"]][
-                    h - 1
-                ]  # Ajusta para base 0
-                horarios.append(f"{data}{dados['turno']}{hora_inicio:02d}:00:00")
-
-            resultado[dia] = horarios
-
-    return resultado
-
-
-def obter_datas_desta_semana() -> dict[str, str]:
-    """
-    Retorna um dicionário com as datas da semana atual, onde a chave é o índice do dia
-    começando com "1" para domingo, e o valor é a data no formato 'yyyy-mm-dd'.
-    """
-    hoje = datetime.now()
-    # Calcula a diferença em dias até o domingo (início da semana)
-    inicio_semana = hoje - timedelta(
-        days=hoje.weekday() + 1 if hoje.weekday() != 6 else 0
-    )
-    datas_semana = {}
-
-    for i in range(7):  # Itera pelos 7 dias da semana
-        dia_semana = inicio_semana + timedelta(days=i)
-        datas_semana[str(i + 1)] = dia_semana.strftime("%Y-%m-%d")
-
-    return datas_semana
-
-
-def obter_data_hoje() -> str:
-    """
-    Retorna a data atual no formato 'yyyy-mm-dd' no fuso horário UTC-3.
-
-    Returns:
-        str: Data atual no formato 'yyyy-mm-dd'.
-    """
-    # Definir o fuso horário UTC-3
-    fuso_horario_utc3 = timezone(timedelta(hours=-3))
-
-    # Obter a data e hora atual no fuso horário UTC-3
-    data_atual_utc3 = datetime.now(fuso_horario_utc3)
-
-    # Retornar apenas a data no formato 'yyyy-mm-dd'
-    return data_atual_utc3.strftime("%Y-%m-%d")
-
-
-# Função para carregar o mapa SVG com base no andar selecionado
-def load_map(level: str) -> str:
-    """Carrega o arquivo SVG correspondente ao andar selecionado."""
-    # Mapeando a escolha do usuário para o arquivo SVG correto
-    arquivos_svg = {
-        "Subsolo": "assets/processado/subsolo.svg",
-        "Térreo": "assets/processado/terreo.svg",
-        "Primeiro Andar": "assets/processado/primeiro_andar.svg",
-        "Segundo Andar": "assets/processado/segundo_andar.svg",
-        "Terceiro Andar": "assets/processado/terceiro_andar.svg",
-    }
-
-    caminho_arquivo = arquivos_svg.get(level, None)
-    if caminho_arquivo is None:
-        return f"O mapa SVG do {level} não foi encontrado."
-
-    try:
-        with open(caminho_arquivo, "r", encoding="utf-8") as arquivo_svg:
-            return arquivo_svg.read()
-    except FileNotFoundError:
-        return f"O mapa SVG do {level} não foi encontrado."
-
-
+# Configuração inicial da página Streamlit
 st.set_page_config(
     page_title="Mapas do Prédio",
     page_icon="🏢",
@@ -115,9 +33,8 @@ st.set_page_config(
     initial_sidebar_state="auto",
 )
 
-
-# Opções de andares disponíveis na combobox
-andares = [
+# Lista de andares disponíveis para seleção pelo usuário
+andares: list[str] = [
     "Subsolo",
     "Térreo",
     "Primeiro Andar",
@@ -125,143 +42,229 @@ andares = [
     "Terceiro Andar",
 ]
 
-# Combobox para selecionar o andar
-andar_selecionado = st.selectbox("Selecione o andar", andares)
+# Caixa de seleção para o usuário escolher o andar que deseja visualizar
+andar_selecionado: str = st.selectbox("Selecione o andar", andares)
 
-
-# Exibindo o mapa correspondente ao andar selecionado
+# Exibe o título do mapa correspondente ao andar selecionado
 st.subheader(f"Mapa do {andar_selecionado}")
-svg_conteudo = load_map(andar_selecionado)
 
-# Exibindo o conteúdo SVG na tela
-st.markdown(f"<div>{svg_conteudo}</div>", unsafe_allow_html=True)
+# Carrega o conteúdo SVG do mapa do andar selecionado
+svg_conteudo: str = load_map(andar_selecionado)
 
+# Detecta cliques no mapa SVG
+clicked: str = click_detector(svg_conteudo)
 
 ################
-# Filtro por andar
+# Filtra as alocações de disciplinas por andar
 
-if andar_selecionado == "Subsolo":
+# Dicionário que mapeia os andares aos seus prefixos correspondentes nas salas
+prefixos_andar: dict[str, str] = {
+    "Subsolo": "sb",
+    "Térreo": "t",
+    "Primeiro Andar": "1",
+    "Segundo Andar": "2",
+    "Terceiro Andar": "3",
+}
+
+# Obtém o prefixo correspondente ao andar selecionado
+prefixo: str = prefixos_andar.get(andar_selecionado, "")
+
+# Filtra as alocações para incluir apenas aquelas do andar selecionado
+if prefixo:
     alocacoes = [
         alocacao
         for alocacao in alocacoes
-        if alocacao.sala.nome.lower().startswith("sb")
-    ]
-
-
-elif andar_selecionado == "Térreo":
-    alocacoes = [
-        alocacao for alocacao in alocacoes if alocacao.sala.nome.lower().startswith("t")
-    ]
-
-elif andar_selecionado == "Primeiro Andar":
-    alocacoes = [
-        alocacao for alocacao in alocacoes if alocacao.sala.nome.lower().startswith("1")
-    ]
-
-elif andar_selecionado == "Segundo Andar":
-    alocacoes = [
-        alocacao for alocacao in alocacoes if alocacao.sala.nome.lower().startswith("2")
-    ]
-
-elif andar_selecionado == "Terceiro Andar":
-    alocacoes = [
-        alocacao for alocacao in alocacoes if alocacao.sala.nome.lower().startswith("3")
+        if alocacao.sala.nome.lower().startswith(prefixo)
     ]
 
 ################
 
 
-opcoes = sorted(
-    list(set([f"{alocacao.sala.bloco} {alocacao.sala.nome}" for alocacao in alocacoes]))
-)
+@st.dialog("Bloco CI", width="large")
+def visualizar_disciplina(alocacoes: list[Alocacao]) -> None:
+    """
+    Exibe informações detalhadas sobre as alocações de disciplinas em uma sala específica.
 
+    Args:
+        alocacoes (list[Alocacao]): Lista de alocações para a sala selecionada.
+    """
+    # Obtém a primeira alocação para extrair informações da sala
+    alocacao = alocacoes[0]
 
-if len(opcoes) > 0:
-    mode = st.selectbox(
-        "Salas:",
-        ()  # TODO: outros componentes
-        + tuple(opcoes),
+    # Extrai informações da sala
+    nome: str = f"{alocacao.sala.bloco} {alocacao.sala.nome}"
+    acessivel: str = "✅ Sim" if alocacao.sala.acessivel else "❌ Não"
+    capacidade: str = f"{alocacao.sala.capacidade} pessoas"
+    tipo: str = alocacao.sala.tipo
+
+    # Exibe as informações da sala em formato de tabela Markdown
+    st.markdown("## Informações:")
+    st.markdown(
+        criar_tabela_markdown(
+            ["Nome", "Acessível", "Capacidade", "Tipo", "Disciplinas"],
+            [[nome, acessivel, capacidade, tipo, str(len(alocacoes))]],
+        )
     )
 
-    # filtrar apenas a sala selecionada
-    alocacoes = [
-        alocacao
-        for alocacao in alocacoes
-        if mode == f"{alocacao.sala.bloco} {alocacao.sala.nome}"
-    ]
+    # Exibe o título para a seção de disciplinas
+    st.markdown("## Disciplinas:")
 
-    week = obter_datas_desta_semana()
+    # Opções de visualização disponíveis para o usuário
+    mode: str = st.selectbox(
+        "Visualização",
+        ("Geral", "Hoje", "Por dia"),
+    )
 
-    events = []
+    # Obtém o dia atual da semana no formato desejado (1 para Domingo, ..., 7 para Sábado)
+    weekday_python: int = datetime.today().weekday()  # 0 é segunda, 6 é domingo
+    weekday_mapping: dict[int, int] = {
+        6: 1,  # Domingo
+        0: 2,  # Segunda-feira
+        1: 3,  # Terça-feira
+        2: 4,  # Quarta-feira
+        3: 5,  # Quinta-feira
+        4: 6,  # Sexta-feira
+        5: 7,  # Sábado
+    }
+    hoje: int = weekday_mapping[weekday_python]
 
-    for alocacao in alocacoes:
-        # [3,5] 'M' [2,3]
-        horarios_desestruturados = desestruturar_horario(alocacao.disciplina.horario)
-        horarios = gerar_horarios(horarios_desestruturados)
-        for dia, formatted_date_time in horarios.items():
-            evento = {
-                "title": alocacao.disciplina.nome,
-                "start": formatted_date_time[0],
-                "end": formatted_date_time[-1],
-                "resourceId": alocacao.disciplina.codigo,
-            }
-            events.append(evento)
-
-    sunday_yyyy_mm_dd = week["1"]  # domingo
-    today_yyyy_mm_dd = obter_data_hoje()
-
-    calendar_resources = [
-        {"id": alocacao.disciplina.codigo, "title": alocacao.disciplina.nome}
-        for alocacao in alocacoes
-    ]
-
-    calendar_options = {
-        "editable": "false",
-        "navLinks": "false",
-        "resources": calendar_resources,
-        "selectable": "false",
+    # Dicionário que mapeia os números dos dias para os nomes dos dias da semana
+    semana: dict[int, str] = {
+        1: "Domingo",
+        2: "Segunda-feira",
+        3: "Terça-feira",
+        4: "Quarta-feira",
+        5: "Quinta-feira",
+        6: "Sexta-feira",
+        7: "Sábado",
     }
 
-    if "resource" in mode:  # TODO: implementar outras visualizações
-        pass
-    else:
-        # sala individual
-        for identificador in list(
-            set(
-                [
-                    f"{alocacao.sala.bloco} {alocacao.sala.nome}"
-                    for alocacao in alocacoes
-                ]
-            )
-        ):
-            if mode == identificador:
-                calendar_options = {
-                    **calendar_options,
-                    "headerToolbar": {
-                        "left": "",
-                        "center": "",
-                        "right": "",
-                    },
-                    "initialDate": today_yyyy_mm_dd,
-                    "initialView": "listWeek",
-                }
+    linhas: list[list[str]] = []  # Lista de linhas para a tabela de disciplinas
+    dias: list[int] = []  # Lista de dias em que a disciplina ocorre
+    horarios_desestruturados: dict = {}  # Dicionário com informações desestruturadas do horário
+    if mode == "Por dia":
+        # Exibe as disciplinas separadas por dia da semana
+        for dia_numero, dia_nome in semana.items():
+            for alocacao in alocacoes:
+                # Desestrutura o horário para obter os dias em que a disciplina ocorre
+                horarios_desestruturados = desestruturar_horario(
+                    alocacao.disciplina.horario
+                )
+                dias = horarios_desestruturados["dias"]
 
-    state = calendar(
-        events=st.session_state.get("events", events),
-        options=calendar_options,
-        custom_css="""
-        .fc-event-past {
-            opacity: 0.8;
-        }
-        .fc-event-time {
-            font-style: italic;
-        }
-        .fc-event-title {
-            font-weight: 700;
-        }
-        .fc-toolbar-title {
-            font-size: 2rem;
-        }
-        """,
-        key=mode,
-    )
+                # Verifica se a disciplina ocorre no dia atual da iteração
+                if dia_numero in dias:
+                    linhas.append(
+                        [
+                            alocacao.disciplina.codigo,
+                            alocacao.disciplina.horario,
+                            alocacao.disciplina.turma,
+                            alocacao.disciplina.nome,
+                            alocacao.disciplina.docente,
+                            str(alocacao.disciplina.alunos),
+                        ]
+                    )
+            if linhas:
+                # Exibe as disciplinas para o dia atual se houverem
+                st.markdown(f"### {dia_nome}")
+                st.markdown(
+                    criar_tabela_markdown(
+                        [
+                            "Código",
+                            "Horário",
+                            "Turma",
+                            "Disciplina",
+                            "Docente",
+                            "Alunos",
+                        ],
+                        linhas,
+                    )
+                )
+    else:
+        # Exibe todas as disciplinas ou apenas as de hoje, dependendo da opção selecionada
+        for alocacao in alocacoes:
+            if mode == "Geral":
+                # Adiciona todas as disciplinas à lista
+                linhas.append(
+                    [
+                        alocacao.disciplina.codigo,
+                        alocacao.disciplina.horario,
+                        alocacao.disciplina.turma,
+                        alocacao.disciplina.nome,
+                        alocacao.disciplina.docente,
+                        str(alocacao.disciplina.alunos),
+                    ]
+                )
+            elif mode == "Hoje":
+                # Desestrutura o horário para obter os dias em que a disciplina ocorre
+                horarios_desestruturados = desestruturar_horario(
+                    alocacao.disciplina.horario
+                )
+                dias = horarios_desestruturados["dias"]
+
+                # Verifica se a disciplina ocorre no dia atual
+                if hoje in dias:
+                    linhas.append(
+                        [
+                            alocacao.disciplina.codigo,
+                            alocacao.disciplina.horario,
+                            alocacao.disciplina.turma,
+                            alocacao.disciplina.nome,
+                            alocacao.disciplina.docente,
+                            str(alocacao.disciplina.alunos),
+                        ]
+                    )
+
+        # Exibe as disciplinas filtradas
+        st.markdown(
+            criar_tabela_markdown(
+                ["Código", "Horário", "Turma", "Disciplina", "Docente", "Alunos"],
+                linhas,
+            )
+        )
+
+    # Exibe instruções sobre como interpretar o horário das disciplinas
+    st.markdown("""
+    ---
+    ## Como interpretar o horário das disciplinas:
+
+    ### 1. Identificação dos dias da semana:
+    - **2** = Segunda-feira
+    - **3** = Terça-feira
+    - **4** = Quarta-feira
+    - **5** = Quinta-feira
+    - **6** = Sexta-feira
+    - **7** = Sábado
+
+    ### 2. Identificação do turno:
+    - **M** = Manhã
+    - **T** = Tarde
+    - **N** = Noite
+
+    ### 3. Exemplo de horários:
+    - **Exemplo 1: 2M2345**
+        - Segunda-feira (**2**) no turno da manhã (**M**), nas aulas 2, 3, 4 e 5.
+
+    | Aulas | Manhã          | Tarde         | Noite         |
+    |-------|----------------|---------------|---------------|
+    | 1     | 07:00 - 08:00  | 13:00 - 14:00 | 19:00 - 20:00 |
+    | 2     | 08:00 - 09:00  | 14:00 - 15:00 | 20:00 - 21:00 |
+    | 3     | 09:00 - 10:00  | 15:00 - 16:00 | 21:00 - 22:00 |
+    | 4     | 10:00 - 11:00  | 16:00 - 17:00 | 22:00 - 23:00 |
+    | 5     | 11:00 - 12:00  | 17:00 - 18:00 | -             |
+    | 6     | 12:00 - 13:00  | 18:00 - 19:00 | -             |
+
+    """)
+
+
+# Verifica se o usuário clicou em algum elemento do mapa
+if clicked and clicked != "":
+    print(f"{datetime.now()} clicou em {clicked}")
+    alocacoes_da_sala: list[Alocacao] = []
+    # Procura por alocações cuja sala corresponda ao elemento clicado
+    for alocacao in alocacoes:
+        if alocacao.sala.nome.lower() in clicked.lower():
+            alocacoes_da_sala.append(alocacao)
+    # Se houver alocações para a sala clicada, exibe o diálogo com as informações
+    if alocacoes_da_sala:
+        visualizar_disciplina(alocacoes_da_sala)
